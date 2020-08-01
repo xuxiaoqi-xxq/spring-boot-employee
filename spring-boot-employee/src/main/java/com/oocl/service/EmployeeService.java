@@ -1,5 +1,7 @@
 package com.oocl.service;
 
+import com.oocl.dto.RequestEmployee;
+import com.oocl.dto.ResponseEmployee;
 import com.oocl.entity.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -10,11 +12,30 @@ import java.util.List;
 
 @Service
 public class EmployeeService {
-    public List<Employee> findAll() {
-        return Arrays.asList(new Employee());
+    public List<ResponseEmployee> findAll() {
+        return Arrays.asList(new ResponseEmployee());
     }
 
-    public Page<Employee> findAllByPageAndPageSize(Integer integer, Integer pageSize) {
-        return new PageImpl<>(Arrays.asList(new Employee()));
+    public Page<ResponseEmployee> findAllByPageAndPageSize(Integer integer, Integer pageSize) {
+        return new PageImpl<>(Arrays.asList(new ResponseEmployee()));
+    }
+
+    public List<ResponseEmployee> findAllByGender(String gender) {
+        return null;
+    }
+
+    public ResponseEmployee findById(Integer employeeId) {
+        return null;
+    }
+
+    public ResponseEmployee add(RequestEmployee employee) {
+        return null;
+    }
+
+    public ResponseEmployee update(Integer employeeId, RequestEmployee newEmployee) {
+        return null;
+    }
+
+    public void deleteByID(Integer employeeId) {
     }
 }
