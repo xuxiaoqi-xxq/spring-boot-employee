@@ -1,13 +1,13 @@
 package com.oocl.controller;
 
+import com.oocl.dto.RequestCompany;
 import com.oocl.dto.ResponseCompany;
 import com.oocl.dto.ResponseEmployee;
+import com.oocl.mapper.CompanyMapper;
 import com.oocl.service.CompanyService;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,8 +17,11 @@ public class CompanyController {
 
     private final CompanyService companyService;
 
-    public CompanyController(CompanyService companyService) {
+    private final CompanyMapper companyMapper;
+
+    public CompanyController(CompanyService companyService, CompanyMapper companyMapper) {
         this.companyService = companyService;
+        this.companyMapper = companyMapper;
     }
 
     @GetMapping()
@@ -39,5 +42,11 @@ public class CompanyController {
     @GetMapping(params = {"page", "pageSize"})
     Page<ResponseCompany> getCompaniesByPageAndSize(Integer page, Integer pageSize) {
         return this.companyService.findAllByPageAndPageSize(--page, pageSize);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    ResponseCompany addCompany(@RequestBody RequestCompany requestCompany) {
+        return this.companyService.add(companyMapper.from(requestCompany));
     }
 }

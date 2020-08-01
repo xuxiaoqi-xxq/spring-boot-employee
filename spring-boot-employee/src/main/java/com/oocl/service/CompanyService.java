@@ -1,7 +1,9 @@
 package com.oocl.service;
 
+import com.oocl.dto.RequestCompany;
 import com.oocl.dto.ResponseCompany;
 import com.oocl.dto.ResponseEmployee;
+import com.oocl.entity.Company;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,10 @@ public class CompanyService {
     }
 
     public Page<ResponseCompany> findAllByPageAndPageSize(Integer page, Integer pageSize) {
+        return null;
+    }
+
+    public ResponseCompany add(Company newCompany) {
         return null;
     }
 }
