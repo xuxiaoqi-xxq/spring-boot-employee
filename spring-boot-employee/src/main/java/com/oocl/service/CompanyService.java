@@ -1,6 +1,7 @@
 package com.oocl.service;
 
 import com.oocl.dto.ResponseCompany;
+import com.oocl.dto.ResponseEmployee;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,10 @@ public class CompanyService {
     }
 
     public ResponseCompany findById(Integer companyId) {
+        return null;
+    }
+
+    public List<ResponseEmployee> findEmployeesByCompanyID(Integer companyId) {
         return null;
     }
 }
