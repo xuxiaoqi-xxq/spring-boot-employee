@@ -4,6 +4,7 @@ import com.oocl.dto.RequestCompany;
 import com.oocl.dto.ResponseCompany;
 import com.oocl.dto.ResponseEmployee;
 import com.oocl.entity.Company;
+import com.oocl.entity.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -15,23 +16,23 @@ public class CompanyService {
         return null;
     }
 
-    public ResponseCompany findById(Integer companyId) {
+    public Company findById(Integer companyId) {
         return null;
     }
 
-    public List<ResponseEmployee> findEmployeesByCompanyID(Integer companyId) {
+    public List<Employee> findEmployeesByCompanyID(Integer companyId) {
         return null;
     }
 
-    public Page<ResponseCompany> findAllByPageAndPageSize(Integer page, Integer pageSize) {
+    public Page<Company> findAllByPageAndPageSize(Integer page, Integer pageSize) {
         return null;
     }
 
-    public ResponseCompany add(Company newCompany) {
+    public Company add(Company newCompany) {
         return null;
     }
 
-    public ResponseCompany update(Integer companyId, Company newCompany) {
+    public Company update(Integer companyId, Company newCompany) {
         return null;
     }
 

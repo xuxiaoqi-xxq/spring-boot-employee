@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.management.MemoryUsage;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/employees")
@@ -28,33 +29,39 @@ public class EmployeeController {
 
     @GetMapping()
     public List<ResponseEmployee> getAllEmployees() {
-        return this.employeeService.findAll();
+        List<Employee> employees = this.employeeService.findAll();
+        return employees.stream().map(employeeMapper::to).collect(Collectors.toList());
     }
 
     @GetMapping(params = {"page", "pageSize"})
     public Page<ResponseEmployee> getAllEmployeesByPageAndSize(Integer page, Integer pageSize) {
-        return this.employeeService.findAllByPageAndPageSize(--page, pageSize);
+        Page<Employee> employees =  this.employeeService.findAllByPageAndPageSize(--page, pageSize);
+        return employees.map(employeeMapper::to);
     }
 
     @GetMapping(params = {"gender"})
     public List<ResponseEmployee> getAllEmployeesByGender(String gender) {
-        return this.employeeService.findAllByGender(gender);
+        List<Employee> employees = this.employeeService.findAllByGender(gender);
+        return employees.stream().map(employeeMapper::to).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
     public ResponseEmployee getEmployee(@PathVariable("id") Integer employeeId) {
-        return this.employeeService.findById(employeeId);
+        Employee employee = this.employeeService.findById(employeeId);
+        return employeeMapper.to(employee);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEmployee addEmployee(@RequestBody RequestEmployee requestEmployee) {
-        return this.employeeService.add(employeeMapper.from(requestEmployee));
+        Employee employee = this.employeeService.add(employeeMapper.from(requestEmployee));
+        return employeeMapper.to(employee);
     }
 
     @PutMapping("/{id}")
     public ResponseEmployee updateEmployee(@RequestBody RequestEmployee requestEmployee, @PathVariable("id") Integer id) {
-        return this.employeeService.update(id, employeeMapper.from(requestEmployee));
+        Employee employee = this.employeeService.update(id, employeeMapper.from(requestEmployee));
+        return employeeMapper.to(employee);
     }
 
     @DeleteMapping("/{id}")
