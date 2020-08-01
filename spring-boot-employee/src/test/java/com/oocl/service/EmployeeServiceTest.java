@@ -115,4 +115,17 @@ public class EmployeeServiceTest {
             assertEquals(20, updatedEmployee.getAge());
         }
     }
+
+    @Test
+    void should_return_void_when_delete_given_employee_id() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+        //when
+        employeeService.deleteByID(1);
+
+        //then
+        Mockito.verify(employeeRepository).deleteById(1);
+    }
 }
