@@ -1,6 +1,5 @@
 package com.oocl.service;
 
-import com.oocl.dto.RequestEmployee;
 import com.oocl.dto.ResponseEmployee;
 import com.oocl.entity.Employee;
 import org.springframework.data.domain.Page;
@@ -28,11 +27,11 @@ public class EmployeeService {
         return null;
     }
 
-    public ResponseEmployee add(RequestEmployee employee) {
+    public ResponseEmployee add(Employee employee) {
         return null;
     }
 
-    public ResponseEmployee update(Integer employeeId, RequestEmployee newEmployee) {
+    public ResponseEmployee update(Integer employeeId, Employee newEmployee) {
         return null;
     }
 

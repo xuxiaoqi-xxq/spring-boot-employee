@@ -3,11 +3,13 @@ package com.oocl.controller;
 import com.oocl.dto.RequestEmployee;
 import com.oocl.dto.ResponseEmployee;
 import com.oocl.entity.Employee;
+import com.oocl.mapper.EmployeeMapper;
 import com.oocl.service.EmployeeService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.management.MemoryUsage;
 import java.util.List;
 
 @RestController
@@ -16,8 +18,12 @@ public class EmployeeController {
 
     private EmployeeService employeeService;
 
-    public EmployeeController(EmployeeService employeeService) {
+    private EmployeeMapper employeeMapper;
+
+
+    public EmployeeController(EmployeeService employeeService, EmployeeMapper employeeMapper) {
         this.employeeService = employeeService;
+        this.employeeMapper = employeeMapper;
     }
 
     @GetMapping()
@@ -43,12 +49,12 @@ public class EmployeeController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEmployee addEmployee(@RequestBody RequestEmployee requestEmployee) {
-        return this.employeeService.add(requestEmployee);
+        return this.employeeService.add(employeeMapper.from(requestEmployee));
     }
 
     @PutMapping("/{id}")
-    public ResponseEmployee updateEmployee(@RequestBody RequestEmployee newEmployee, @PathVariable("id") Integer id) {
-        return this.employeeService.update(id, newEmployee);
+    public ResponseEmployee updateEmployee(@RequestBody RequestEmployee requestEmployee, @PathVariable("id") Integer id) {
+        return this.employeeService.update(id, employeeMapper.from(requestEmployee));
     }
 
     @DeleteMapping("/{id}")
