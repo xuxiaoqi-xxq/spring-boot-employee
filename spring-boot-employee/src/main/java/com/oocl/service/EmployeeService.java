@@ -5,6 +5,7 @@ import com.oocl.entity.Employee;
 import com.oocl.repository.EmployeeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -22,8 +23,8 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public Page<Employee> findAllByPageAndPageSize(Integer integer, Integer pageSize) {
-        return null;
+    public Page<Employee> findAllByPageAndPageSize(Integer page, Integer pageSize) {
+        return employeeRepository.findAll(PageRequest.of(page, pageSize));
     }
 
     public List<Employee> findAllByGender(String gender) {
