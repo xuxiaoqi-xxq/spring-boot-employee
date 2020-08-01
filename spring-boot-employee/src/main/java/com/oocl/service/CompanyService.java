@@ -10,4 +10,8 @@ public class CompanyService {
     public List<ResponseCompany> findAll() {
         return null;
     }
+
+    public ResponseCompany findById(Integer companyId) {
+        return null;
+    }
 }
