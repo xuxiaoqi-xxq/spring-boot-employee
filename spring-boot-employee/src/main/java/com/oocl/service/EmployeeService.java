@@ -3,6 +3,7 @@ package com.oocl.service;
 import com.oocl.dto.ResponseEmployee;
 import com.oocl.entity.Employee;
 import com.oocl.repository.EmployeeRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -32,15 +33,19 @@ public class EmployeeService {
     }
 
     public Employee findById(Integer employeeId) {
-        return null;
+        return employeeRepository.findById(employeeId).orElse(null);
     }
 
     public Employee add(Employee employee) {
-        return null;
+        return employeeRepository.save(employee);
     }
 
     public Employee update(Integer employeeId, Employee newEmployee) {
-        return null;
+        Employee foundEmployee = employeeRepository.findById(employeeId).orElse(null);
+        if(foundEmployee != null && employeeId == newEmployee.getEmployeeId()) {
+            BeanUtils.copyProperties(newEmployee, foundEmployee);
+        }
+        return foundEmployee;
     }
 
     public void deleteByID(Integer employeeId) {
