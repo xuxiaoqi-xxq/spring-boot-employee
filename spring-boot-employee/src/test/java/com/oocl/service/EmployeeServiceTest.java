@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -62,5 +63,56 @@ public class EmployeeServiceTest {
 
         //then
         assertEquals(employees, employeesByGender);
+    }
+
+    @Test
+    void should_return_specific_employee_when_find_given_id() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        Employee employee = new Employee(2, "vae", "male", 20, 1000);
+        given(employeeRepository.findById(2)).willReturn(Optional.of(employee));
+
+        //when
+        Employee foundEmployee = employeeService.findById(2);
+
+        //then
+        assertEquals(employee, foundEmployee);
+    }
+
+    @Test
+    void should_return_created_employee_when_add_given_employee() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        Employee employee = new Employee(2, "vae", "male", 20, 1000);
+        given(employeeRepository.save(employee)).willReturn(employee);
+
+        //when
+        Employee createdEmployee = employeeService.add(employee);
+
+        //then
+        assertEquals(employee, createdEmployee);
+    }
+
+    @Test
+    void should_update_employee_when_update_given_employee() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        given(employeeRepository.findById(2)).willReturn(Optional.of(new Employee(2, "new name", "female", 20, 1000)));
+
+        //when
+        Employee waitUpdateEmployee = new Employee(2, "vae", "male", 20, 1000);
+        Employee updatedEmployee = employeeService.update(2, waitUpdateEmployee);
+
+        //then
+        if (updatedEmployee != null) {
+            assertEquals(2, updatedEmployee.getEmployeeId());
+            assertEquals("new name", updatedEmployee.getName());
+            assertEquals("female", updatedEmployee.getGender());
+            assertEquals(1000, updatedEmployee.getSalary());
+            assertEquals(20, updatedEmployee.getAge());
+        }
     }
 }
