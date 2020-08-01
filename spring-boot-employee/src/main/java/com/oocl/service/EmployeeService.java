@@ -49,5 +49,6 @@ public class EmployeeService {
     }
 
     public void deleteByID(Integer employeeId) {
+        employeeRepository.deleteById(employeeId);
     }
 }
