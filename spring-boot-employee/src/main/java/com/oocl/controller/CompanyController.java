@@ -54,4 +54,9 @@ public class CompanyController {
     ResponseCompany updateCompany(@RequestBody RequestCompany requestCompany, @PathVariable("id") Integer companyId) {
         return this.companyService.update(companyId, companyMapper.from(requestCompany));
     }
+
+    @DeleteMapping("/{id}")
+    void deleteCompany(@PathVariable("id") Integer companyId) {
+        this.companyService.deleteByID(companyId);
+    }
 }

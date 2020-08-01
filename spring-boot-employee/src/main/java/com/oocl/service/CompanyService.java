@@ -34,4 +34,8 @@ public class CompanyService {
     public ResponseCompany update(Integer companyId, Company newCompany) {
         return null;
     }
+
+    public void deleteByID(Integer companyId) {
+
+    }
 }
