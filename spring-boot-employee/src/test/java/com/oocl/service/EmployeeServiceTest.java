@@ -47,4 +47,20 @@ public class EmployeeServiceTest {
         //then
         assertEquals(employees, employeesByPageAndPageSize);
     }
+
+    @Test
+    void should_return_gender_employees_when_find_by_gender_given_gender() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        List<Employee> employees = Arrays.asList(new Employee(1, "eva", "female", 18, 1000),
+                new Employee(2, "vae", "male", 20, 1000));
+        given(employeeRepository.findByGender("female")).willReturn(employees);
+
+        //when
+        List<Employee> employeesByGender = employeeService.findAllByGender("female");
+
+        //then
+        assertEquals(employees, employeesByGender);
+    }
 }
