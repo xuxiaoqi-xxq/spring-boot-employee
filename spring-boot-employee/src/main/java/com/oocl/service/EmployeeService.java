@@ -19,7 +19,7 @@ public class EmployeeService {
     }
 
     public List<Employee> findAll() {
-        return null;
+        return employeeRepository.findAll();
     }
 
     public Page<Employee> findAllByPageAndPageSize(Integer integer, Integer pageSize) {
