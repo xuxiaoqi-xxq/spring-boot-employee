@@ -30,4 +30,8 @@ public class CompanyService {
     public ResponseCompany add(Company newCompany) {
         return null;
     }
+
+    public ResponseCompany update(Integer companyId, Company newCompany) {
+        return null;
+    }
 }

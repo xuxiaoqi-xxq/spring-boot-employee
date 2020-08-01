@@ -49,4 +49,9 @@ public class CompanyController {
     ResponseCompany addCompany(@RequestBody RequestCompany requestCompany) {
         return this.companyService.add(companyMapper.from(requestCompany));
     }
+
+    @PutMapping("/{id}")
+    ResponseCompany updateCompany(@RequestBody RequestCompany requestCompany, @PathVariable("id") Integer companyId) {
+        return this.companyService.update(companyId, companyMapper.from(requestCompany));
+    }
 }
