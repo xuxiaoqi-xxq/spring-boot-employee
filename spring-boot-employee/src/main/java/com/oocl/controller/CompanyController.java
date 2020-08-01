@@ -3,6 +3,7 @@ package com.oocl.controller;
 import com.oocl.dto.ResponseCompany;
 import com.oocl.dto.ResponseEmployee;
 import com.oocl.service.CompanyService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,5 +34,10 @@ public class CompanyController {
     @GetMapping("/{id}/employees")
     List<ResponseEmployee> getEmployeesByCompanyId(@PathVariable("id") Integer companyId) {
         return this.companyService.findEmployeesByCompanyID(companyId);
+    }
+
+    @GetMapping(params = {"page", "pageSize"})
+    Page<ResponseCompany> getCompaniesByPageAndSize(Integer page, Integer pageSize) {
+        return this.companyService.findAllByPageAndPageSize(--page, pageSize);
     }
 }

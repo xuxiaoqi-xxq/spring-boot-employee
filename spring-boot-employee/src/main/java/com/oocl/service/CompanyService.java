@@ -2,6 +2,7 @@ package com.oocl.service;
 
 import com.oocl.dto.ResponseCompany;
 import com.oocl.dto.ResponseEmployee;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,10 @@ public class CompanyService {
     }
 
     public List<ResponseEmployee> findEmployeesByCompanyID(Integer companyId) {
+        return null;
+    }
+
+    public Page<ResponseCompany> findAllByPageAndPageSize(Integer page, Integer pageSize) {
         return null;
     }
 }
