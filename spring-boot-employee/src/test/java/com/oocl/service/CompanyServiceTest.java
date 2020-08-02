@@ -4,7 +4,11 @@ import com.oocl.entity.Company;
 import com.oocl.entity.Employee;
 import com.oocl.repository.CompanyRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -60,6 +64,21 @@ public class CompanyServiceTest {
 
         //then
         assertEquals(employees, employeesByCompanyID);
+    }
+
+    @Test
+    void should_get_page_companies_when_get_by_page_given_page_and_size() {
+        //given
+        CompanyRepository companyRepository = mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository, null);
+        Page<Company> companies = new PageImpl<>(Arrays.asList(new Company(1, "OOCL", null), new Company(2, "OOCL", null)));
+        given(companyRepository.findAll(PageRequest.of(1, 2))).willReturn(companies);
+
+        //when
+        Page<Company> companiesByPageAndPageSize = companyService.findAllByPageAndPageSize(1, 2);
+
+        //then
+        assertEquals(companies, companiesByPageAndPageSize);
     }
 
 }
