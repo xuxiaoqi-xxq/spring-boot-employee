@@ -34,4 +34,17 @@ public class NoSuchDataExceptionTest {
         //then
         assertThrows(IllegalOperationException.class, () -> employeeService.add(null));
     }
+
+    @Test
+    void should_throw_IllegalOperationException_when_update_given_diff_employee_id() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+        //when
+        Employee updatedEmployee = new Employee(1, "eva", "female", 18, 1000);
+
+        //then
+        assertThrows(IllegalOperationException.class, () -> employeeService.update(2, updatedEmployee));
+    }
 }
