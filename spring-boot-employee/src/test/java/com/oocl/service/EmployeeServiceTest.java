@@ -119,7 +119,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_void_when_delete_given_employee_id() {
+    void should_return_void_when_delete_given_employee_id() throws IllegalOperationException {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);

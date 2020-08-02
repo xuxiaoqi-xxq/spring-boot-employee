@@ -8,7 +8,6 @@ import org.mockito.Mockito;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
@@ -60,5 +59,15 @@ public class NoSuchDataExceptionTest {
 
         //then
         assertThrows(NoSuchDataException.class, () -> employeeService.update(1, updatedEmployee));
+    }
+
+    @Test
+    void should_throw_IllegalOperationException_when_delete_given_null_employee_id() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+        //then
+        assertThrows(IllegalOperationException.class, () -> employeeService.deleteByID(null));
     }
 }

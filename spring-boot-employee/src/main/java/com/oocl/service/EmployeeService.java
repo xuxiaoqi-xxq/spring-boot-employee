@@ -58,7 +58,10 @@ public class EmployeeService {
         return foundEmployee;
     }
 
-    public void deleteByID(Integer employeeId) {
+    public void deleteByID(Integer employeeId) throws IllegalOperationException {
+        if(employeeId == null) {
+            throw new IllegalOperationException();
+        }
         employeeRepository.deleteById(employeeId);
     }
 }

@@ -66,7 +66,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEmployee(@PathVariable("id") Integer employeeId) {
+    public void deleteEmployee(@PathVariable("id") Integer employeeId) throws IllegalOperationException {
         this.employeeService.deleteByID(employeeId);
     }
 }
