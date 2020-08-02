@@ -22,7 +22,6 @@ public class NoSuchDataExceptionTest {
         given(employeeRepository.findById(1)).willReturn(Optional.empty());
 
         //then
-        Exception exception = assertThrows(NoSuchDataException.class, () -> employeeService.findById(1));
-        assertEquals("no such data", exception.getMessage());
+        assertThrows(NoSuchDataException.class, () -> employeeService.findById(1));
     }
 }
