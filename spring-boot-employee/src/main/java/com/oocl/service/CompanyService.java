@@ -44,7 +44,7 @@ public class CompanyService {
     }
 
     public Company add(Company newCompany) {
-        return null;
+        return companyRepository.save(newCompany);
     }
 
     public Company update(Integer companyId, Company newCompany) {
