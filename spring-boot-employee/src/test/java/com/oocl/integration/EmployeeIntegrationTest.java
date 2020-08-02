@@ -17,8 +17,7 @@ import java.util.Arrays;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -156,5 +155,38 @@ public class EmployeeIntegrationTest {
         assertEquals(18, employee.getAge());
         assertEquals(10000, employee.getSalary());
         assertEquals("female", employee.getGender());
+    }
+
+    @Test
+    void should_return_updated_employee_when_hit_employees_endpoint_given_new_employee() throws Exception {
+        //given
+        Company company = new Company(1, "oocl", null);
+        companyRepository.save(company);
+        employeeRepository.save(new Employee(1, "myname", "female", 18, 10000));
+
+        String updateEmployee = "{" +
+                "    \"gender\":\"male\"," +
+                "    \"name\":\"new name\"," +
+                "    \"age\":20," +
+                "    \"salary\":100000," +
+                "    \"companyId\":1," +
+                "    \"employeeId\":1" +
+                "}";
+
+        mockMvc.perform(put("/employees/1").contentType(MediaType.APPLICATION_JSON).content(updateEmployee))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.employeeId").isNumber())
+                .andExpect(jsonPath("$.name").value("new name"))
+                .andExpect(jsonPath("$.age").value(20))
+                .andExpect(jsonPath("$.salary").value(100000))
+                .andExpect(jsonPath("$.gender").value("male"))
+                .andExpect(jsonPath("$.companyId").value(1));
+
+        Employee employee = employeeRepository.findById(1).orElse(null);
+        assertNotNull(employee);
+        assertEquals("new name", employee.getName());
+        assertEquals(20, employee.getAge());
+        assertEquals(100000, employee.getSalary());
+        assertEquals("male", employee.getGender());
     }
 }

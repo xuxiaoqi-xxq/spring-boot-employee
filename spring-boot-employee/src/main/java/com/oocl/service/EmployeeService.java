@@ -55,7 +55,7 @@ public class EmployeeService {
             throw new NoSuchDataException();
         }
         BeanUtils.copyProperties(newEmployee, foundEmployee);
-        return foundEmployee;
+        return employeeRepository.save(foundEmployee);
     }
 
     public void deleteByID(Integer employeeId) throws IllegalOperationException {
