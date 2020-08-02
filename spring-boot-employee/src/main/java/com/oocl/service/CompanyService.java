@@ -49,4 +49,8 @@ public class CompanyService {
     public void deleteByID(Integer companyId) {
 
     }
+
+    public Company findByID(Integer companyId) {
+        return null;
+    }
 }
