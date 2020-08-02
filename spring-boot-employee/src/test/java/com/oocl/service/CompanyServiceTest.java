@@ -192,4 +192,14 @@ public class CompanyServiceTest {
         assertThrows(NoSuchDataException.class, () -> companyService.update(2, updatedCompany));
     }
 
+    @Test
+    void should_throw_IllegalOperationException_when_delete_given_null() {
+        //given
+        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository, null);
+
+        //then
+        assertThrows(IllegalOperationException.class, () -> companyService.deleteById(null));
+    }
+
 }
