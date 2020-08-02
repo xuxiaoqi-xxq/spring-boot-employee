@@ -7,6 +7,7 @@ import com.oocl.exception.NoSuchDataException;
 import com.oocl.repository.CompanyRepository;
 import com.oocl.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -162,6 +163,19 @@ public class CompanyServiceTest {
 
         //then
         assertThrows(IllegalOperationException.class, () -> companyService.add(null));
+    }
+
+    @Test
+    void should_throw_IllegalOperationException_when_update_given_diff_id() {
+        //given
+        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository, null);
+
+        //when
+        Company updatedCompany = new Company(1, "eva", null);
+
+        //then
+        assertThrows(IllegalOperationException.class, () -> companyService.update(2, updatedCompany));
     }
 
 }
