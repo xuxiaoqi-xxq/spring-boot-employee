@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
@@ -17,7 +18,9 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -95,5 +98,23 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.content", hasSize(1)))
                 .andExpect(jsonPath("$.content[0].companyId").isNumber())
                 .andExpect(jsonPath("$.content[0].name").value("oocl2"));
+    }
+
+    @Test
+    void should_return_created_companies_when_hit_companies_endpoint_given_company() throws Exception {
+        //given
+        String createdCompany = "{ " +
+                "    \"companyId\": 1," +
+                "    \"name\": \"gdsa\"," +
+                "    \"employees\": null" +
+                "}";
+
+        mockMvc.perform(post("/companies").contentType(MediaType.APPLICATION_JSON).content(createdCompany))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.companyId").isNumber())
+                .andExpect(jsonPath("$.name").value("gdsa"));
+
+        List<Company> companies = companyRepository.findAll();
+        assertEquals("gdsa", companies.get(0).getName());
     }
 }
