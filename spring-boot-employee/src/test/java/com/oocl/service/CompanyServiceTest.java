@@ -54,27 +54,6 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_throw_NoSuchDataException_when_find_by_id_given_wrong_id() {
-        //given
-        CompanyRepository companyRepository = mock(CompanyRepository.class);
-        CompanyService companyService = new CompanyService(companyRepository, null);
-        given(companyRepository.findById(1)).willReturn(Optional.empty());
-
-        //then
-        assertThrows(NoSuchDataException.class, () -> companyService.findByID(1));
-    }
-
-    @Test
-    void should_throw_IllegalOperationException_when_find_by_id_given_null_id() {
-        //given
-        CompanyRepository companyRepository = mock(CompanyRepository.class);
-        CompanyService companyService = new CompanyService(companyRepository, null);
-
-        //then
-        assertThrows(IllegalOperationException.class, () -> companyService.findByID(null));
-    }
-
-    @Test
     void should_return_employees_when_find_employees_given_company_id() {
         //given
         CompanyRepository companyRepository = mock(CompanyRepository.class);
@@ -152,6 +131,37 @@ public class CompanyServiceTest {
 
         //then
         verify(companyRepository).deleteById(1);
+    }
+
+    @Test
+    void should_throw_NoSuchDataException_when_find_by_id_given_wrong_id() {
+        //given
+        CompanyRepository companyRepository = mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository, null);
+        given(companyRepository.findById(1)).willReturn(Optional.empty());
+
+        //then
+        assertThrows(NoSuchDataException.class, () -> companyService.findByID(1));
+    }
+
+    @Test
+    void should_throw_IllegalOperationException_when_find_by_id_given_null_id() {
+        //given
+        CompanyRepository companyRepository = mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository, null);
+
+        //then
+        assertThrows(IllegalOperationException.class, () -> companyService.findByID(null));
+    }k
+
+    @Test
+    void should_throw_IllegalOperationException_when_add_given_null() {
+        //given
+        CompanyRepository companyRepository = mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository, null);
+
+        //then
+        assertThrows(IllegalOperationException.class, () -> companyService.add(null));
     }
 
 }
