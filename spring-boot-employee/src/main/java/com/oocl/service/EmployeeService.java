@@ -46,14 +46,15 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public Employee update(Integer employeeId, Employee newEmployee) throws IllegalOperationException {
+    public Employee update(Integer employeeId, Employee newEmployee) throws IllegalOperationException, NoSuchDataException {
         if(!employeeId.equals(newEmployee.getEmployeeId())){
             throw new IllegalOperationException();
         }
         Employee foundEmployee = employeeRepository.findById(employeeId).orElse(null);
-        if(foundEmployee != null && employeeId.equals(newEmployee.getEmployeeId())) {
-            BeanUtils.copyProperties(newEmployee, foundEmployee);
+        if(foundEmployee == null) {
+            throw new NoSuchDataException();
         }
+        BeanUtils.copyProperties(newEmployee, foundEmployee);
         return foundEmployee;
     }
 
