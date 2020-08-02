@@ -1,15 +1,11 @@
 package com.oocl.service;
 
-import com.oocl.dto.RequestCompany;
-import com.oocl.dto.ResponseCompany;
-import com.oocl.dto.ResponseEmployee;
 import com.oocl.entity.Company;
 import com.oocl.entity.Employee;
 import com.oocl.exception.IllegalOperationException;
 import com.oocl.exception.NoSuchDataException;
 import com.oocl.repository.CompanyRepository;
 import com.oocl.repository.EmployeeRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
