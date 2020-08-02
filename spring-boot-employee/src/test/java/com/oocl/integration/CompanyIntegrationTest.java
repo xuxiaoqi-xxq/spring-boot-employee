@@ -37,11 +37,22 @@ public class CompanyIntegrationTest {
         Company company = new Company(1, "oocl", null);
         companyRepository.save(company);
 
-        //when
         mockMvc.perform(get("/companies"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].companyId").isNumber())
                 .andExpect(jsonPath("$[0].name").value("oocl"));
+    }
+
+    @Test
+    void should_return_specific_company_when_hit_companies_endpoint_given_company_id() throws Exception {
+        //given
+        Company company = new Company(1, "oocl", null);
+        Company savedCompany = companyRepository.save(company);
+
+        mockMvc.perform(get("/companies/" + savedCompany.getCompanyId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.companyId").isNumber())
+                .andExpect(jsonPath("$.name").value("oocl"));
     }
 }
