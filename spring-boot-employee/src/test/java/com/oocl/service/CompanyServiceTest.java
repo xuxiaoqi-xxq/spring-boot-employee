@@ -1,6 +1,7 @@
 package com.oocl.service;
 
 import com.oocl.entity.Company;
+import com.oocl.entity.Employee;
 import com.oocl.repository.CompanyRepository;
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -43,4 +45,21 @@ public class CompanyServiceTest {
         //then
         assertEquals(ooclCompany, company);
     }
+
+    @Test
+    void should_return_employees_when_find_employees_given_company_id() {
+        //given
+        CompanyRepository companyRepository = mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository, null);
+        List<Employee> employees = Collections.singletonList(new Employee(1, "eva", "female", 18, 10000));
+        Company company = new Company(1, "OOCL", employees);
+        given(companyRepository.findById(1)).willReturn(Optional.of(company));
+
+        //when
+        List<Employee> employeesByCompanyID = companyService.findEmployeesByCompanyID(1);
+
+        //then
+        assertEquals(employees, employeesByCompanyID);
+    }
+
 }
