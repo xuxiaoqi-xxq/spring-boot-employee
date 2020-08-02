@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 public class EmployeeServiceTest {
@@ -102,17 +103,17 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        given(employeeRepository.findById(2)).willReturn(Optional.of(new Employee(2, "new name", "female", 20, 1000)));
+        given(employeeRepository.findById(2)).willReturn(Optional.of(new Employee(2, "vae", "female", 20, 1000)));
 
         //when
-        Employee waitUpdateEmployee = new Employee(2, "vae", "male", 20, 1000);
+        Employee waitUpdateEmployee = new Employee(2, "new name", "male", 20, 1000);
         Employee updatedEmployee = employeeService.update(2, waitUpdateEmployee);
 
         //then
         if (updatedEmployee != null) {
             assertEquals(2, updatedEmployee.getEmployeeId());
             assertEquals("new name", updatedEmployee.getName());
-            assertEquals("female", updatedEmployee.getGender());
+            assertEquals("male", updatedEmployee.getGender());
             assertEquals(1000, updatedEmployee.getSalary());
             assertEquals(20, updatedEmployee.getAge());
         }
@@ -129,5 +130,63 @@ public class EmployeeServiceTest {
 
         //then
         Mockito.verify(employeeRepository).deleteById(1);
+    }
+
+    @Test
+    void should_throw_NoSuchDataException_when_findById_given_wrong_id() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        given(employeeRepository.findById(1)).willReturn(Optional.empty());
+
+        //then
+        assertThrows(NoSuchDataException.class, () -> employeeService.findById(1));
+    }
+
+    @Test
+    void should_throw_IllegalOperationException_when_add_given_null_employee() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+        //then
+        assertThrows(IllegalOperationException.class, () -> employeeService.add(null));
+    }
+
+    @Test
+    void should_throw_IllegalOperationException_when_update_given_diff_employee_id() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+        //when
+        Employee updatedEmployee = new Employee(1, "eva", "female", 18, 1000);
+
+        //then
+        assertThrows(IllegalOperationException.class, () -> employeeService.update(2, updatedEmployee));
+    }
+
+    @Test
+    void should_throw_NoSuchDataException_when_update_given_wrong_employee_id() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        given(employeeRepository.findById(1)).willReturn(Optional.empty());
+
+        //when
+        Employee updatedEmployee = new Employee(1, "eva", "female", 18, 1000);
+
+        //then
+        assertThrows(NoSuchDataException.class, () -> employeeService.update(1, updatedEmployee));
+    }
+
+    @Test
+    void should_throw_IllegalOperationException_when_delete_given_null_employee_id() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+        //then
+        assertThrows(IllegalOperationException.class, () -> employeeService.deleteByID(null));
     }
 }
