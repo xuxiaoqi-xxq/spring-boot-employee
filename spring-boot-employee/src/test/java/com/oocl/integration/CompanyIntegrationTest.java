@@ -19,8 +19,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -114,6 +113,26 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.companyId").isNumber())
                 .andExpect(jsonPath("$.name").value("gdsa"));
 
+        List<Company> companies = companyRepository.findAll();
+        assertEquals("gdsa", companies.get(0).getName());
+    }
+
+    @Test
+    void should_return_updated_companies_when_hit_companies_endpoint_given_new_company() throws Exception {
+        //given
+        Company company = new Company(1, "oocw", null);
+        Company savedCompany = companyRepository.save(company);
+        String createdCompany = "{ " +
+                "    \"companyId\": 1," +
+                "    \"name\": \"gdsa\"," +
+                "    \"employees\": null" +
+                "}";
+        //when
+        mockMvc.perform(put("/companies/" + savedCompany.getCompanyId()).contentType(MediaType.APPLICATION_JSON).content(createdCompany))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.companyId").isNumber())
+                .andExpect(jsonPath("$.name").value("gdsa"));
+        //then
         List<Company> companies = companyRepository.findAll();
         assertEquals("gdsa", companies.get(0).getName());
     }
