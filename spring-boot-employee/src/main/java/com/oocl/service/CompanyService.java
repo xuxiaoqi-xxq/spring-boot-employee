@@ -69,10 +69,11 @@ public class CompanyService {
         return this.companyRepository.save(company);
     }
 
-    public void deleteById(Integer companyId) {
-        if (companyId != null){
-            companyRepository.deleteById(companyId);
+    public void deleteById(Integer companyId) throws IllegalOperationException {
+        if (companyId == null){
+            throw new IllegalOperationException();
         }
+        companyRepository.deleteById(companyId);
     }
 
     public Company findByID(Integer companyId) throws NoSuchDataException, IllegalOperationException {

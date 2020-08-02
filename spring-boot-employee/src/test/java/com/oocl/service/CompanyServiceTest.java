@@ -107,6 +107,7 @@ public class CompanyServiceTest {
         CompanyService companyService = new CompanyService(companyRepository, null);
         given(companyRepository.findById(1)).willReturn(Optional.of(new Company(1, "OOCL", null)));
         Company company = new Company(1, "CargoSmart", null);
+        when(companyRepository.save(any())).thenReturn(company);
 
         //when
         Company updatedCompany = companyService.update(1, company);
@@ -118,7 +119,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_void_when_delete_given_company_id() {
+    void should_return_void_when_delete_given_company_id() throws IllegalOperationException {
         //given
         CompanyRepository companyRepository = mock(CompanyRepository.class);
         Optional<Company> specificCompany = Optional.of(new Company(1, "name", asList(new Employee(1, "eva", "female", 19, 2000))));

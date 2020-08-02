@@ -69,7 +69,7 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{id}")
-    void deleteCompany(@PathVariable("id") Integer companyId) {
+    void deleteCompany(@PathVariable("id") Integer companyId) throws IllegalOperationException {
         this.companyService.deleteById(companyId);
     }
 }
