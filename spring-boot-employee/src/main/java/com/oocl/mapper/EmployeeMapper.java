@@ -4,6 +4,7 @@ import com.oocl.dto.RequestEmployee;
 import com.oocl.dto.ResponseEmployee;
 import com.oocl.entity.Company;
 import com.oocl.entity.Employee;
+import com.oocl.exception.NoSuchDataException;
 import com.oocl.repository.CompanyRepository;
 import com.oocl.service.CompanyService;
 import com.oocl.service.EmployeeService;
@@ -18,7 +19,7 @@ public class EmployeeMapper {
     @Autowired
     private CompanyService companyService;
 
-    public Employee from(RequestEmployee requestEmployee) {
+    public Employee from(RequestEmployee requestEmployee) throws NoSuchDataException {
         Employee employee = new Employee();
         BeanUtils.copyProperties(requestEmployee, employee);
         Company company = companyService.findById(requestEmployee.getCompanyId());
@@ -29,7 +30,7 @@ public class EmployeeMapper {
     public ResponseEmployee to(Employee employee) {
         ResponseEmployee responseEmployee = new ResponseEmployee();
         BeanUtils.copyProperties(employee, responseEmployee);
-        //responseEmployee.setCompanyId(employee.getCompany().getCompanyId());
+        responseEmployee.setCompanyId(employee.getCompany().getCompanyId());
         return responseEmployee;
     }
 }

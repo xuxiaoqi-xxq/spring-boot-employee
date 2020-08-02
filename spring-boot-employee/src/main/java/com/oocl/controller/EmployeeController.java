@@ -54,7 +54,7 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEmployee addEmployee(@RequestBody RequestEmployee requestEmployee) throws IllegalOperationException {
+    public ResponseEmployee addEmployee(@RequestBody RequestEmployee requestEmployee) throws IllegalOperationException, NoSuchDataException {
         Employee employee = this.employeeService.add(employeeMapper.from(requestEmployee));
         return employeeMapper.to(employee);
     }

@@ -37,7 +37,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
-    ResponseCompany getCompanyById(@PathVariable("id") Integer companyId) {
+    ResponseCompany getCompanyById(@PathVariable("id") Integer companyId) throws NoSuchDataException {
         Company company = this.companyService.findById(companyId);
         return companyMapper.to(company);
     }

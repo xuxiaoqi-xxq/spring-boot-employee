@@ -30,10 +30,10 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
-    public Company findById(Integer companyId) {
+    public Company findById(Integer companyId) throws NoSuchDataException {
         Company company = companyRepository.findById(companyId).orElse(null);
         if(company == null){
-            return null;
+            throw new NoSuchDataException();
         }
         return company;
     }
