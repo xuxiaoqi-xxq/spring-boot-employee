@@ -23,7 +23,7 @@ public class CompanyService {
     }
 
     public List<Company> findAll() {
-        return null;
+        return companyRepository.findAll();
     }
 
     public Company findById(Integer companyId) {
