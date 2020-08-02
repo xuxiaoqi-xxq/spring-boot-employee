@@ -1,6 +1,7 @@
 package com.oocl.service;
 
 import com.oocl.entity.Employee;
+import com.oocl.exception.NoSuchDataException;
 import com.oocl.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -66,7 +67,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_specific_employee_when_find_given_id() {
+    void should_return_specific_employee_when_find_given_id() throws NoSuchDataException {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);

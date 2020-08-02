@@ -1,6 +1,7 @@
 package com.oocl.service;
 
 import com.oocl.entity.Employee;
+import com.oocl.exception.NoSuchDataException;
 import com.oocl.repository.EmployeeRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -29,8 +30,12 @@ public class EmployeeService {
         return employeeRepository.findByGender(gender);
     }
 
-    public Employee findById(Integer employeeId) {
-        return employeeRepository.findById(employeeId).orElse(null);
+    public Employee findById(Integer employeeId) throws NoSuchDataException {
+        Employee employee = employeeRepository.findById(employeeId).orElse(null);
+        if(employee == null) {
+            throw new NoSuchDataException();
+        }
+        return employee;
     }
 
     public Employee add(Employee employee) {

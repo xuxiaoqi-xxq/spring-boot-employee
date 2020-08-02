@@ -3,6 +3,7 @@ package com.oocl.controller;
 import com.oocl.dto.RequestEmployee;
 import com.oocl.dto.ResponseEmployee;
 import com.oocl.entity.Employee;
+import com.oocl.exception.NoSuchDataException;
 import com.oocl.mapper.EmployeeMapper;
 import com.oocl.service.EmployeeService;
 import org.springframework.data.domain.Page;
@@ -45,7 +46,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEmployee getEmployee(@PathVariable("id") Integer employeeId) {
+    public ResponseEmployee getEmployee(@PathVariable("id") Integer employeeId) throws NoSuchDataException {
         Employee employee = this.employeeService.findById(employeeId);
         return employeeMapper.to(employee);
     }
