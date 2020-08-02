@@ -8,6 +8,7 @@ import com.oocl.entity.Employee;
 import com.oocl.repository.CompanyRepository;
 import com.oocl.repository.EmployeeRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class CompanyService {
     }
 
     public Page<Company> findAllByPageAndPageSize(Integer page, Integer pageSize) {
-        return null;
+        return companyRepository.findAll(PageRequest.of(page, pageSize));
     }
 
     public Company add(Company newCompany) {
