@@ -9,16 +9,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -73,14 +72,16 @@ public class CompanyIntegrationTest {
                 new Employee(2, "eva2", "female", 19, 10000));
 
         for (Employee employee: employees){
-            employee.setCompany(company);
+            employee.setCompany(savedCompany);
         }
         employeeRepository.saveAll(employees);
 
-        mockMvc.perform(get("/companies/" + company.getCompanyId() + "/employees"))
+        mockMvc.perform(get("/companies/" + savedCompany.getCompanyId() + "/employees"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].name").value("eva1"));
+
+        employeeRepository.deleteAll();
     }
 
     @Test
@@ -123,7 +124,7 @@ public class CompanyIntegrationTest {
         Company company = new Company(1, "oocw", null);
         Company savedCompany = companyRepository.save(company);
         String createdCompany = "{ " +
-                "    \"companyId\": 1," +
+                "    \"companyId\": "+ savedCompany.getCompanyId() + "," +
                 "    \"name\": \"gdsa\"," +
                 "    \"employees\": null" +
                 "}";
@@ -135,5 +136,21 @@ public class CompanyIntegrationTest {
         //then
         List<Company> companies = companyRepository.findAll();
         assertEquals("gdsa", companies.get(0).getName());
+    }
+
+    @Test
+    void should_return_void_when_hit_companies_endpoint_given_company_id() throws Exception {
+        //given
+        Company company = new Company(1, "oocw", null);
+        Company savedCompany = companyRepository.save(company);
+        Employee employee = new Employee(1, "eva", "female", 19, 10000);
+        employee.setCompany(savedCompany);
+        Employee savedEmployee = employeeRepository.save(employee);
+
+        mockMvc.perform(delete("/companies/" + savedCompany.getCompanyId()))
+                .andExpect(status().isOk());
+
+        assertNull(companyRepository.findById(savedCompany.getCompanyId()).orElse(null));
+        assertNull(employeeRepository.findById(savedEmployee.getEmployeeId()).orElse(null));
     }
 }
