@@ -32,7 +32,7 @@ public class CompanyService {
         return null;
     }
 
-    public List<Employee> findEmployeesByCompanyID(Integer companyId) {
+    public List<Employee> findEmployeesByCompanyId(Integer companyId) {
         Company company = companyRepository.findById(companyId).orElse(null);
         if(company != null){
             return company.getEmployees();
@@ -57,7 +57,7 @@ public class CompanyService {
         return company;
     }
 
-    public void deleteByID(Integer companyId) {
+    public void deleteById(Integer companyId) {
 
     }
 

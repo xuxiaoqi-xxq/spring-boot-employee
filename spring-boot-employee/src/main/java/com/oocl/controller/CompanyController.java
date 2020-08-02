@@ -43,7 +43,7 @@ public class CompanyController {
     @GetMapping("/{id}/employees")
     List<ResponseEmployee> getEmployeesByCompanyId(@PathVariable("id") Integer companyId) {
         EmployeeMapper employeeMapper = new EmployeeMapper();
-        List<Employee> employees = this.companyService.findEmployeesByCompanyID(companyId);
+        List<Employee> employees = this.companyService.findEmployeesByCompanyId(companyId);
         return employees.stream().map(employeeMapper::to).collect(Collectors.toList());
     }
 
@@ -68,6 +68,6 @@ public class CompanyController {
 
     @DeleteMapping("/{id}")
     void deleteCompany(@PathVariable("id") Integer companyId) {
-        this.companyService.deleteByID(companyId);
+        this.companyService.deleteById(companyId);
     }
 }
