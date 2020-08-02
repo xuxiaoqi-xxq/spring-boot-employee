@@ -14,7 +14,6 @@ public class Employee {
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "companyId")
     private Company company;
-    //private Integer companyId;
 
     public Employee(Integer employeeId, String name, String gender, Integer age, Integer salary) {
         this.employeeId = employeeId;

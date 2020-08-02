@@ -10,7 +10,11 @@ spring:
     hibernate:
       ddl-auto: none
     database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
 
   h2:
     console:
       enabled: true
+
+  flyway:
+    location: classpath:db/migration
