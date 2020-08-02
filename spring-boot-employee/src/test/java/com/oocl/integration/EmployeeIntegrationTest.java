@@ -15,8 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -188,5 +187,18 @@ public class EmployeeIntegrationTest {
         assertEquals(20, employee.getAge());
         assertEquals(100000, employee.getSalary());
         assertEquals("male", employee.getGender());
+    }
+
+    @Test
+    void should_return_void_when_hit_employees_endpoint_given_employee_id() throws Exception {
+        //given
+        Company company = new Company(1, "oocl", null);
+        companyRepository.save(company);
+        Employee savedEmployee = employeeRepository.save(new Employee(1, "myname", "female", 18, 10000));
+
+        mockMvc.perform(delete("/employees/" + savedEmployee.getEmployeeId()))
+                .andExpect(status().isOk());
+
+        assertNull(employeeRepository.findById(savedEmployee.getEmployeeId()).orElse(null));
     }
 }
