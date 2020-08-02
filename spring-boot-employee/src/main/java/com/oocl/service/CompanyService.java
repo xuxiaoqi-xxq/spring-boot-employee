@@ -58,7 +58,9 @@ public class CompanyService {
     }
 
     public void deleteById(Integer companyId) {
-
+        if (companyId != null){
+            companyRepository.deleteById(companyId);
+        }
     }
 
     public Company findByID(Integer companyId) {
