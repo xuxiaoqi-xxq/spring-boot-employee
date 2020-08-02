@@ -2,6 +2,7 @@ package com.oocl.service;
 
 import com.oocl.entity.Company;
 import com.oocl.entity.Employee;
+import com.oocl.exception.NoSuchDataException;
 import com.oocl.repository.CompanyRepository;
 import com.oocl.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
@@ -15,8 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.Arrays.asList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -50,6 +50,17 @@ public class CompanyServiceTest {
 
         //then
         assertEquals(ooclCompany, company);
+    }
+
+    @Test
+    void should_throw_NoSuchDataException_when_find_by_id_given_wrong_id() {
+        //given
+        CompanyRepository companyRepository = mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository, null);
+        given(companyRepository.findById(1)).willReturn(Optional.empty());
+
+        //then
+        assertThrows(NoSuchDataException.class, () -> companyService.findByID(1));
     }
 
     @Test
