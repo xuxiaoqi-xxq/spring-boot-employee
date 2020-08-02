@@ -2,6 +2,7 @@ package com.oocl.service;
 
 import com.oocl.entity.Company;
 import com.oocl.entity.Employee;
+import com.oocl.exception.IllegalOperationException;
 import com.oocl.exception.NoSuchDataException;
 import com.oocl.repository.CompanyRepository;
 import com.oocl.repository.EmployeeRepository;
@@ -61,6 +62,16 @@ public class CompanyServiceTest {
 
         //then
         assertThrows(NoSuchDataException.class, () -> companyService.findByID(1));
+    }
+
+    @Test
+    void should_throw_IllegalOperationException_when_find_by_id_given_null_id() {
+        //given
+        CompanyRepository companyRepository = mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository, null);
+
+        //then
+        assertThrows(IllegalOperationException.class, () -> companyService.findByID(null));
     }
 
     @Test
