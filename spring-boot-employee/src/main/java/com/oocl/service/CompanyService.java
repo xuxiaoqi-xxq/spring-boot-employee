@@ -50,7 +50,10 @@ public class CompanyService {
         return companyRepository.findAll(PageRequest.of(page, pageSize));
     }
 
-    public Company add(Company newCompany) {
+    public Company add(Company newCompany) throws IllegalOperationException {
+        if (newCompany == null || newCompany.getCompanyId() == null) {
+            throw new IllegalOperationException();
+        }
         return companyRepository.save(newCompany);
     }
 

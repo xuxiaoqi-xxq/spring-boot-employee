@@ -5,6 +5,7 @@ import com.oocl.dto.ResponseCompany;
 import com.oocl.dto.ResponseEmployee;
 import com.oocl.entity.Company;
 import com.oocl.entity.Employee;
+import com.oocl.exception.IllegalOperationException;
 import com.oocl.mapper.CompanyMapper;
 import com.oocl.mapper.EmployeeMapper;
 import com.oocl.service.CompanyService;
@@ -55,7 +56,7 @@ public class CompanyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    ResponseCompany addCompany(@RequestBody RequestCompany requestCompany) {
+    ResponseCompany addCompany(@RequestBody RequestCompany requestCompany) throws IllegalOperationException {
         Company company = this.companyService.add(companyMapper.from(requestCompany));
         return companyMapper.to(company);
     }
