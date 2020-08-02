@@ -39,7 +39,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_specific_company_when_find_by_id_given_id() throws NoSuchDataException {
+    void should_return_specific_company_when_find_by_id_given_id() throws NoSuchDataException, IllegalOperationException {
         //given
         CompanyRepository companyRepository = mock(CompanyRepository.class);
         CompanyService companyService = new CompanyService(companyRepository, null);
