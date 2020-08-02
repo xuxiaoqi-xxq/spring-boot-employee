@@ -24,4 +24,14 @@ public class NoSuchDataExceptionTest {
         //then
         assertThrows(NoSuchDataException.class, () -> employeeService.findById(1));
     }
+
+    @Test
+    void should_throw_IllegalOperationException_when_add_given_null_employee() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+        //then
+        assertThrows(IllegalOperationException.class, () -> employeeService.add(null));
+    }
 }

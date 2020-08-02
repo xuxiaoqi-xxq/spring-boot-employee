@@ -1,6 +1,7 @@
 package com.oocl.service;
 
 import com.oocl.entity.Employee;
+import com.oocl.exception.IllegalOperationException;
 import com.oocl.exception.NoSuchDataException;
 import com.oocl.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
@@ -82,7 +83,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_created_employee_when_add_given_employee() {
+    void should_return_created_employee_when_add_given_employee() throws IllegalOperationException {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);

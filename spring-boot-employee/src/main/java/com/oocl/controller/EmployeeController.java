@@ -3,6 +3,7 @@ package com.oocl.controller;
 import com.oocl.dto.RequestEmployee;
 import com.oocl.dto.ResponseEmployee;
 import com.oocl.entity.Employee;
+import com.oocl.exception.IllegalOperationException;
 import com.oocl.exception.NoSuchDataException;
 import com.oocl.mapper.EmployeeMapper;
 import com.oocl.service.EmployeeService;
@@ -53,7 +54,7 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEmployee addEmployee(@RequestBody RequestEmployee requestEmployee) {
+    public ResponseEmployee addEmployee(@RequestBody RequestEmployee requestEmployee) throws IllegalOperationException {
         Employee employee = this.employeeService.add(employeeMapper.from(requestEmployee));
         return employeeMapper.to(employee);
     }

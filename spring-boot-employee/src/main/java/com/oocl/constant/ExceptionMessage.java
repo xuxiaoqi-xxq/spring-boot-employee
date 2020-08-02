@@ -1,7 +1,9 @@
 package com.oocl.constant;
 
 public enum  ExceptionMessage {
-    NO_SUCH_DATA("no such data");
+    NO_SUCH_DATA("no such data"),
+
+    ILLEGAL_OPERATION("illegal operation");
 
     private String message;
 

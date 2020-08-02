@@ -1,6 +1,7 @@
 package com.oocl.service;
 
 import com.oocl.entity.Employee;
+import com.oocl.exception.IllegalOperationException;
 import com.oocl.exception.NoSuchDataException;
 import com.oocl.repository.EmployeeRepository;
 import org.springframework.beans.BeanUtils;
@@ -38,7 +39,10 @@ public class EmployeeService {
         return employee;
     }
 
-    public Employee add(Employee employee) {
+    public Employee add(Employee employee) throws IllegalOperationException {
+        if (employee == null || employee.getEmployeeId() == null){
+            throw new IllegalOperationException();
+        }
         return employeeRepository.save(employee);
     }
 
