@@ -55,7 +55,7 @@ public class EmployeeIntegrationTest {
     }
 
     @Test
-    void should_return_specific_company_when_hit_companies_endpoint_given_company_id() throws Exception {
+    void should_page_employees_when_hit_employees_endpoint_given_page_and_pageSize() throws Exception {
         //given
         Company company = new Company(1, "oocl", null);
         companyRepository.save(company);
@@ -75,5 +75,28 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$.content[0].age").value(employee2.getAge()))
                 .andExpect(jsonPath("$.content[0].salary").value(employee2.getSalary()))
                 .andExpect(jsonPath("$.content[0].gender").value(employee2.getGender()));
+    }
+
+    @Test
+    void should_gender_employees_when_hit_employees_endpoint_given_gender() throws Exception {
+        //given
+        Company company = new Company(1, "oocl", null);
+        companyRepository.save(company);
+        Employee employee1 = new Employee(1, "eva1", "male", 18, 1000);
+        Employee employee2 = new Employee(2, "eva2", "female", 18, 1000);
+        Employee employee3 = new Employee(3, "eva3", "male", 18, 1000);
+        employee1.setCompany(company);
+        employee2.setCompany(company);
+        employee3.setCompany(company);
+        employeeRepository.saveAll(Arrays.asList(employee1, employee2, employee3));
+
+        mockMvc.perform(get("/employees?gender=female"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].employeeId").isNumber())
+                .andExpect(jsonPath("$[0].name").value(employee2.getName()))
+                .andExpect(jsonPath("$[0].age").value(employee2.getAge()))
+                .andExpect(jsonPath("$[0].salary").value(employee2.getSalary()))
+                .andExpect(jsonPath("$[0].gender").value(employee2.getGender()));
     }
 }
