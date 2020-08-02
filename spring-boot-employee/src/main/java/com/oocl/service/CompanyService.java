@@ -7,6 +7,7 @@ import com.oocl.entity.Company;
 import com.oocl.entity.Employee;
 import com.oocl.repository.CompanyRepository;
 import com.oocl.repository.EmployeeRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,12 @@ public class CompanyService {
     }
 
     public Company update(Integer companyId, Company newCompany) {
-        return null;
+        Company company = this.companyRepository.findById(companyId).orElse(null);
+        if (newCompany != null && company != null) {
+            company.setName(newCompany.getName());
+            this.companyRepository.save(company);
+        }
+        return company;
     }
 
     public void deleteByID(Integer companyId) {
