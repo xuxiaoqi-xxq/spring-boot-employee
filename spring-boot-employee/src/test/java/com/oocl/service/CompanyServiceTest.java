@@ -81,4 +81,19 @@ public class CompanyServiceTest {
         assertEquals(companies, companiesByPageAndPageSize);
     }
 
+    @Test
+    void should_return_company_when_add_given_company() {
+        //given
+        CompanyRepository companyRepository = mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository, null);
+        Company company = new Company(1, "OOCL", null);
+        given(companyRepository.save(company)).willReturn(company);
+
+        //when
+        Company createdCompany = companyService.add(company);
+
+        //then
+        assertEquals(company, createdCompany);
+    }
+
 }
