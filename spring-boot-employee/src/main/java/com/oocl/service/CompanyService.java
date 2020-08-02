@@ -51,6 +51,6 @@ public class CompanyService {
     }
 
     public Company findByID(Integer companyId) {
-        return null;
+        return companyRepository.findById(companyId).orElse(null);
     }
 }
