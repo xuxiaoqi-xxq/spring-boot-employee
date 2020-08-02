@@ -3,9 +3,9 @@ package com.oocl.mapper;
 import com.oocl.dto.RequestEmployee;
 import com.oocl.dto.ResponseEmployee;
 import com.oocl.entity.Employee;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
-
+@Component
 public class EmployeeMapper {
 
     public Employee from(RequestEmployee requestEmployee) {

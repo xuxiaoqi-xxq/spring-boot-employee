@@ -7,10 +7,10 @@ public class Employee {
 
     @Id
     private Integer employeeId;
-    private final String name;
-    private final String gender;
-    private final Integer age;
-    private final Integer salary;
+    private String name;
+    private String gender;
+    private Integer age;
+    private Integer salary;
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     @JoinColumn(name = "companyId")
     private Company company;
