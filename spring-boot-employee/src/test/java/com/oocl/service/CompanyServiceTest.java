@@ -178,4 +178,18 @@ public class CompanyServiceTest {
         assertThrows(IllegalOperationException.class, () -> companyService.update(2, updatedCompany));
     }
 
+    @Test
+    void should_throw_NoSuchDataException_when_update_given_wrong_id() {
+        //given
+        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository, null);
+        when(companyRepository.findById(1)).thenReturn(Optional.empty());
+
+        //when
+        Company updatedCompany = new Company(2, "eva", null);
+
+        //then
+        assertThrows(NoSuchDataException.class, () -> companyService.update(2, updatedCompany));
+    }
+
 }
