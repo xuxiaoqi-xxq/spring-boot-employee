@@ -29,7 +29,11 @@ public class CompanyService {
     }
 
     public Company findById(Integer companyId) {
-        return null;
+        Company company = companyRepository.findById(companyId).orElse(null);
+        if(company == null){
+            return null;
+        }
+        return company;
     }
 
     public List<Employee> findEmployeesByCompanyId(Integer companyId) {
