@@ -1,15 +1,12 @@
 package com.oocl.service;
 
-import com.oocl.dto.ResponseEmployee;
 import com.oocl.entity.Employee;
 import com.oocl.repository.EmployeeRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -42,7 +39,7 @@ public class EmployeeService {
 
     public Employee update(Integer employeeId, Employee newEmployee) {
         Employee foundEmployee = employeeRepository.findById(employeeId).orElse(null);
-        if(foundEmployee != null && employeeId == newEmployee.getEmployeeId()) {
+        if(foundEmployee != null && employeeId.equals(newEmployee.getEmployeeId())) {
             BeanUtils.copyProperties(newEmployee, foundEmployee);
         }
         return foundEmployee;

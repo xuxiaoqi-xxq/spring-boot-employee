@@ -5,6 +5,8 @@ import com.oocl.dto.ResponseCompany;
 import com.oocl.dto.ResponseEmployee;
 import com.oocl.entity.Company;
 import com.oocl.entity.Employee;
+import com.oocl.repository.CompanyRepository;
+import com.oocl.repository.EmployeeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,15 @@ import java.util.List;
 
 @Service
 public class CompanyService {
-    public List<ResponseCompany> findAll() {
+    private final CompanyRepository companyRepository;
+    private final EmployeeRepository employeeRepository;
+
+    public CompanyService(CompanyRepository companyRepository, EmployeeRepository employeeRepository) {
+        this.companyRepository = companyRepository;
+        this.employeeRepository = employeeRepository;
+    }
+
+    public List<Company> findAll() {
         return null;
     }
 

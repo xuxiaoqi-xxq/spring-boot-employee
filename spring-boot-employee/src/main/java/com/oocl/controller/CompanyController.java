@@ -30,7 +30,8 @@ public class CompanyController {
 
     @GetMapping()
     List<ResponseCompany> getCompanies() {
-        return this.companyService.findAll();
+        List<Company> companies = this.companyService.findAll();
+        return companies.stream().map(companyMapper::to).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
