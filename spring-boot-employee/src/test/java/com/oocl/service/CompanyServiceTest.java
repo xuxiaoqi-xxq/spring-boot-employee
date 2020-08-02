@@ -15,6 +15,7 @@ import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -94,6 +95,23 @@ public class CompanyServiceTest {
 
         //then
         assertEquals(company, createdCompany);
+    }
+
+    @Test
+    void should_return_company_when_update_given_company() {
+        //given
+        CompanyRepository companyRepository = mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository, null);
+        given(companyRepository.findById(1)).willReturn(Optional.of(new Company(1, "OOCL", null)));
+        Company company = new Company(1, "CargoSmart", null);
+
+        //when
+        Company updatedCompany = companyService.update(1, company);
+
+        //then
+        assertEquals(1, updatedCompany.getCompanyId());
+        assertEquals("CargoSmart", updatedCompany.getName());
+        assertNull(updatedCompany.getEmployees());
     }
 
 }
