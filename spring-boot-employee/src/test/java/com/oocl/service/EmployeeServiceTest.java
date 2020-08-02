@@ -98,7 +98,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_update_employee_when_update_given_employee() {
+    void should_update_employee_when_update_given_employee() throws IllegalOperationException {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);

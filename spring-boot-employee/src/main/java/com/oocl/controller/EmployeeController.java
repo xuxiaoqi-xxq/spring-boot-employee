@@ -60,7 +60,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEmployee updateEmployee(@RequestBody RequestEmployee requestEmployee, @PathVariable("id") Integer id) {
+    public ResponseEmployee updateEmployee(@RequestBody RequestEmployee requestEmployee, @PathVariable("id") Integer id) throws IllegalOperationException {
         Employee employee = this.employeeService.update(id, employeeMapper.from(requestEmployee));
         return employeeMapper.to(employee);
     }
