@@ -80,4 +80,20 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].name").value("eva1"));
     }
+
+    @Test
+    void should_page_companies_when_hit_companies_endpoint_given_page_and_pageSize() throws Exception {
+        //given
+        Company company1 = new Company(1, "oocl1", null);
+        Company company2 = new Company(2, "oocl2", null);
+        Company company3 = new Company(3, "oocl3", null);
+        List<Company> companies = Arrays.asList(company1, company2, company3);
+        companyRepository.saveAll(companies);
+
+        mockMvc.perform(get("/companies?page=2&pageSize=1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].companyId").isNumber())
+                .andExpect(jsonPath("$.content[0].name").value("oocl2"));
+    }
 }
