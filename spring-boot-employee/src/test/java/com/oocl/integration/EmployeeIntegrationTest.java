@@ -99,4 +99,26 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[0].salary").value(employee2.getSalary()))
                 .andExpect(jsonPath("$[0].gender").value(employee2.getGender()));
     }
+
+    @Test
+    void should_specific_employee_when_hit_employees_endpoint_given_employee_id() throws Exception {
+        //given
+        Company company = new Company(1, "oocl", null);
+        companyRepository.save(company);
+        Employee employee1 = new Employee(1, "eva1", "male", 18, 1000);
+        Employee employee2 = new Employee(2, "eva2", "female", 18, 1000);
+        Employee employee3 = new Employee(3, "eva3", "male", 18, 1000);
+        employee1.setCompany(company);
+        employee2.setCompany(company);
+        employee3.setCompany(company);
+        employeeRepository.saveAll(Arrays.asList(employee1, employee2, employee3));
+
+        mockMvc.perform(get("/employees/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.employeeId").isNumber())
+                .andExpect(jsonPath("$.name").value(employee1.getName()))
+                .andExpect(jsonPath("$.age").value(employee1.getAge()))
+                .andExpect(jsonPath("$.salary").value(employee1.getSalary()))
+                .andExpect(jsonPath("$.gender").value(employee1.getGender()));
+    }
 }
