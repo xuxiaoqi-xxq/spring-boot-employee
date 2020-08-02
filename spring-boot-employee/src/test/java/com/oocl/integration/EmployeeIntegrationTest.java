@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import sun.security.krb5.internal.ccache.CredentialsCache;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -54,5 +52,28 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[0].age").value(employee.getAge()))
                 .andExpect(jsonPath("$[0].salary").value(employee.getSalary()))
                 .andExpect(jsonPath("$[0].gender").value(employee.getGender()));
+    }
+
+    @Test
+    void should_return_specific_company_when_hit_companies_endpoint_given_company_id() throws Exception {
+        //given
+        Company company = new Company(1, "oocl", null);
+        companyRepository.save(company);
+        Employee employee1 = new Employee(1, "eva1", "male", 18, 1000);
+        Employee employee2 = new Employee(2, "eva2", "male", 18, 1000);
+        Employee employee3 = new Employee(3, "eva3", "male", 18, 1000);
+        employee1.setCompany(company);
+        employee2.setCompany(company);
+        employee3.setCompany(company);
+        employeeRepository.saveAll(Arrays.asList(employee1, employee2, employee3));
+
+        mockMvc.perform(get("/employees?page=2&pageSize=1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].employeeId").isNumber())
+                .andExpect(jsonPath("$.content[0].name").value(employee2.getName()))
+                .andExpect(jsonPath("$.content[0].age").value(employee2.getAge()))
+                .andExpect(jsonPath("$.content[0].salary").value(employee2.getSalary()))
+                .andExpect(jsonPath("$.content[0].gender").value(employee2.getGender()));
     }
 }
