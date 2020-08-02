@@ -6,6 +6,7 @@ import com.oocl.dto.ResponseEmployee;
 import com.oocl.entity.Company;
 import com.oocl.entity.Employee;
 import com.oocl.exception.IllegalOperationException;
+import com.oocl.exception.NoSuchDataException;
 import com.oocl.mapper.CompanyMapper;
 import com.oocl.mapper.EmployeeMapper;
 import com.oocl.service.CompanyService;
@@ -62,7 +63,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    ResponseCompany updateCompany(@RequestBody RequestCompany requestCompany, @PathVariable("id") Integer companyId) throws IllegalOperationException {
+    ResponseCompany updateCompany(@RequestBody RequestCompany requestCompany, @PathVariable("id") Integer companyId) throws IllegalOperationException, NoSuchDataException {
         Company company = this.companyService.update(companyId, companyMapper.from(requestCompany));
         return companyMapper.to(company);
     }

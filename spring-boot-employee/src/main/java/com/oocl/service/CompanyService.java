@@ -57,16 +57,16 @@ public class CompanyService {
         return companyRepository.save(newCompany);
     }
 
-    public Company update(Integer companyId, Company newCompany) throws IllegalOperationException {
+    public Company update(Integer companyId, Company newCompany) throws IllegalOperationException, NoSuchDataException {
         if(!companyId.equals(newCompany.getCompanyId())){
             throw new IllegalOperationException();
         }
         Company company = this.companyRepository.findById(companyId).orElse(null);
-        if (newCompany != null && company != null) {
-            company.setName(newCompany.getName());
-            this.companyRepository.save(company);
+        if (company == null) {
+            throw new NoSuchDataException();
         }
-        return company;
+        company.setName(newCompany.getName());
+        return this.companyRepository.save(company);
     }
 
     public void deleteById(Integer companyId) {
