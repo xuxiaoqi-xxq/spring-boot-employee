@@ -5,6 +5,7 @@ import com.oocl.dto.ResponseCompany;
 import com.oocl.dto.ResponseEmployee;
 import com.oocl.entity.Company;
 import com.oocl.entity.Employee;
+import com.oocl.exception.NoSuchDataException;
 import com.oocl.repository.CompanyRepository;
 import com.oocl.repository.EmployeeRepository;
 import org.springframework.beans.BeanUtils;
@@ -67,7 +68,11 @@ public class CompanyService {
         }
     }
 
-    public Company findByID(Integer companyId) {
-        return companyRepository.findById(companyId).orElse(null);
+    public Company findByID(Integer companyId) throws NoSuchDataException {
+        Company company = companyRepository.findById(companyId).orElse(null);
+        if (company == null) {
+            throw new NoSuchDataException();
+        }
+        return company;
     }
 }
