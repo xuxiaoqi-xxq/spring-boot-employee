@@ -57,7 +57,10 @@ public class CompanyService {
         return companyRepository.save(newCompany);
     }
 
-    public Company update(Integer companyId, Company newCompany) {
+    public Company update(Integer companyId, Company newCompany) throws IllegalOperationException {
+        if(!companyId.equals(newCompany.getCompanyId())){
+            throw new IllegalOperationException();
+        }
         Company company = this.companyRepository.findById(companyId).orElse(null);
         if (newCompany != null && company != null) {
             company.setName(newCompany.getName());
