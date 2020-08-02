@@ -9,12 +9,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -120,5 +124,37 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$.age").value(employee1.getAge()))
                 .andExpect(jsonPath("$.salary").value(employee1.getSalary()))
                 .andExpect(jsonPath("$.gender").value(employee1.getGender()));
+    }
+
+    @Test
+    void should_add_employee_when_hit_employees_endpoint_given_employee() throws Exception {
+        //given
+        Company company = new Company(1, "oocl", null);
+        companyRepository.save(company);
+
+        String createEmployee = "{" +
+                "    \"gender\":\"female\"," +
+                "    \"name\":\"xxx\"," +
+                "    \"age\":18," +
+                "    \"salary\":10000," +
+                "    \"companyId\":1," +
+                "    \"employeeId\":1" +
+                "}";
+
+        mockMvc.perform(post("/employees").contentType(MediaType.APPLICATION_JSON).content(createEmployee))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.employeeId").isNumber())
+                .andExpect(jsonPath("$.name").value("xxx"))
+                .andExpect(jsonPath("$.age").value(18))
+                .andExpect(jsonPath("$.salary").value(10000))
+                .andExpect(jsonPath("$.gender").value("female"))
+                .andExpect(jsonPath("$.companyId").value(1));
+
+        Employee employee = employeeRepository.findById(1).orElse(null);
+        assertNotNull(employee);
+        assertEquals("xxx", employee.getName());
+        assertEquals(18, employee.getAge());
+        assertEquals(10000, employee.getSalary());
+        assertEquals("female", employee.getGender());
     }
 }
