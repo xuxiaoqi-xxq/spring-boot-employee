@@ -12,16 +12,15 @@ public class Employee {
     private String gender;
     private Integer age;
     private Integer salary;
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "companyId")
-    private Company company;
+    private Integer companyId;
 
-    public Employee(Integer employeeId, String name, String gender, Integer age, Integer salary) {
+    public Employee(Integer employeeId, String name, String gender, Integer age, Integer salary, Integer companyId) {
         this.employeeId = employeeId;
         this.name = name;
         this.gender = gender;
         this.age = age;
         this.salary = salary;
+        this.companyId = companyId;
     }
 
     public Employee() {
@@ -68,11 +67,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Company getCompany() {
-        return company;
+    public Integer getCompanyId() {
+        return companyId;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 }

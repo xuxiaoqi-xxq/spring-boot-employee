@@ -42,9 +42,9 @@ public class EmployeeIntegrationTest {
     void should_return_all_employees_when_hit_employees_endpoint_given_nothing() throws Exception {
         //given
         Company company = new Company(1, "oocl", null);
-        companyRepository.save(company);
-        Employee employee = new Employee(1, "eva", "male", 18, 1000);
-        employee.setCompany(company);
+        Company savedCompany = companyRepository.save(company);
+        Employee employee = new Employee(1, "eva", "male", 18, 1000, savedCompany.getCompanyId());
+        employee.setCompanyId(savedCompany.getCompanyId());
         employeeRepository.save(employee);
 
         mockMvc.perform(get("/employees"))
@@ -61,13 +61,13 @@ public class EmployeeIntegrationTest {
     void should_page_employees_when_hit_employees_endpoint_given_page_and_pageSize() throws Exception {
         //given
         Company company = new Company(1, "oocl", null);
-        companyRepository.save(company);
-        Employee employee1 = new Employee(1, "eva1", "male", 18, 1000);
-        Employee employee2 = new Employee(2, "eva2", "male", 18, 1000);
-        Employee employee3 = new Employee(3, "eva3", "male", 18, 1000);
-        employee1.setCompany(company);
-        employee2.setCompany(company);
-        employee3.setCompany(company);
+        Company savedCompany = companyRepository.save(company);
+        Employee employee1 = new Employee(1, "eva1", "male", 18, 1000, savedCompany.getCompanyId());
+        Employee employee2 = new Employee(2, "eva2", "male", 18, 1000, savedCompany.getCompanyId());
+        Employee employee3 = new Employee(3, "eva3", "male", 18, 1000, savedCompany.getCompanyId());
+        employee1.setCompanyId(savedCompany.getCompanyId());
+        employee2.setCompanyId(savedCompany.getCompanyId());
+        employee3.setCompanyId(savedCompany.getCompanyId());
         List<Employee> savedEmployees = employeeRepository.saveAll(Arrays.asList(employee1, employee2, employee3));
 
         mockMvc.perform(get("/employees?page=2&pageSize=1"))
@@ -84,13 +84,13 @@ public class EmployeeIntegrationTest {
     void should_gender_employees_when_hit_employees_endpoint_given_gender() throws Exception {
         //given
         Company company = new Company(1, "oocl", null);
-        companyRepository.save(company);
-        Employee employee1 = new Employee(1, "eva1", "male", 18, 1000);
-        Employee employee2 = new Employee(2, "eva2", "female", 18, 1000);
-        Employee employee3 = new Employee(3, "eva3", "male", 18, 1000);
-        employee1.setCompany(company);
-        employee2.setCompany(company);
-        employee3.setCompany(company);
+        Company savedCompany = companyRepository.save(company);
+        Employee employee1 = new Employee(1, "eva1", "male", 18, 1000, savedCompany.getCompanyId());
+        Employee employee2 = new Employee(2, "eva2", "female", 18, 1000, savedCompany.getCompanyId());
+        Employee employee3 = new Employee(3, "eva3", "male", 18, 1000, savedCompany.getCompanyId());
+        employee1.setCompanyId(savedCompany.getCompanyId());
+        employee2.setCompanyId(savedCompany.getCompanyId());
+        employee3.setCompanyId(savedCompany.getCompanyId());
         employeeRepository.saveAll(Arrays.asList(employee1, employee2, employee3));
 
         mockMvc.perform(get("/employees?gender=female"))
@@ -107,13 +107,13 @@ public class EmployeeIntegrationTest {
     void should_specific_employee_when_hit_employees_endpoint_given_employee_id() throws Exception {
         //given
         Company company = new Company(1, "oocl", null);
-        companyRepository.save(company);
-        Employee employee1 = new Employee(1, "eva1", "male", 18, 1000);
-        Employee employee2 = new Employee(2, "eva2", "female", 18, 1000);
-        Employee employee3 = new Employee(3, "eva3", "male", 18, 1000);
-        employee1.setCompany(company);
-        employee2.setCompany(company);
-        employee3.setCompany(company);
+        Company savedCompany = companyRepository.save(company);
+        Employee employee1 = new Employee(1, "eva1", "male", 18, 1000, savedCompany.getCompanyId());
+        Employee employee2 = new Employee(2, "eva2", "female", 18, 1000, savedCompany.getCompanyId());
+        Employee employee3 = new Employee(3, "eva3", "male", 18, 1000, savedCompany.getCompanyId());
+        employee1.setCompanyId(savedCompany.getCompanyId());
+        employee2.setCompanyId(savedCompany.getCompanyId());
+        employee3.setCompanyId(savedCompany.getCompanyId());
         List<Employee> savedEmployees = employeeRepository.saveAll(Arrays.asList(employee1, employee2, employee3));
 
         mockMvc.perform(get("/employees/" + savedEmployees.get(0).getEmployeeId()))
@@ -162,8 +162,8 @@ public class EmployeeIntegrationTest {
         //given
         Company company = new Company(1, "oocl", null);
         Company savedCompany = companyRepository.save(company);
-        Employee employee = new Employee(1, "myname", "female", 18, 10000);
-        employee.setCompany(savedCompany);
+        Employee employee = new Employee(1, "myname", "female", 18, 10000, savedCompany.getCompanyId());
+        employee.setCompanyId(savedCompany.getCompanyId());
         Employee savedEmployee = employeeRepository.save(employee);
 
         String updateEmployee = "{" +
@@ -196,8 +196,8 @@ public class EmployeeIntegrationTest {
     void should_return_void_when_hit_employees_endpoint_given_employee_id() throws Exception {
         //given
         Company company = new Company(1, "oocl", null);
-        companyRepository.save(company);
-        Employee savedEmployee = employeeRepository.save(new Employee(1, "myname", "female", 18, 10000));
+        Company savedCompany = companyRepository.save(company);
+        Employee savedEmployee = employeeRepository.save(new Employee(1, "myname", "female", 18, 10000, savedCompany.getCompanyId()));
 
         mockMvc.perform(delete("/employees/" + savedEmployee.getEmployeeId()))
                 .andExpect(status().isOk());

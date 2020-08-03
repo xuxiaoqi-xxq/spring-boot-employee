@@ -42,11 +42,13 @@ public class CompanyIntegrationTest {
     void should_return_companies_when_hit_companies_endpoint_given_nothing() throws Exception {
         //given
         Company company = new Company(1, "oocl", null);
+        Company company1 = new Company(2, "oocl", null);
         companyRepository.save(company);
+        companyRepository.save(company1);
 
         mockMvc.perform(get("/companies"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].companyId").isNumber())
                 .andExpect(jsonPath("$[0].name").value("oocl"));
     }
@@ -68,11 +70,11 @@ public class CompanyIntegrationTest {
         //given
         Company company = new Company(1, "oocw", null);
         Company savedCompany = companyRepository.save(company);
-        List<Employee> employees = Arrays.asList(new Employee(1, "eva1", "female", 18, 1000),
-                new Employee(2, "eva2", "female", 19, 10000));
+        List<Employee> employees = Arrays.asList(new Employee(1, "eva1", "female", 18, 1000, savedCompany.getCompanyId()),
+                new Employee(2, "eva2", "female", 19, 10000, savedCompany.getCompanyId()));
 
         for (Employee employee: employees){
-            employee.setCompany(savedCompany);
+            employee.setCompanyId(savedCompany.getCompanyId());
         }
         employeeRepository.saveAll(employees);
 
@@ -143,8 +145,8 @@ public class CompanyIntegrationTest {
         //given
         Company company = new Company(1, "oocw", null);
         Company savedCompany = companyRepository.save(company);
-        Employee employee = new Employee(1, "eva", "female", 19, 10000);
-        employee.setCompany(savedCompany);
+        Employee employee = new Employee(1, "eva", "female", 19, 10000, savedCompany.getCompanyId());
+        employee.setCompanyId(savedCompany.getCompanyId());
         Employee savedEmployee = employeeRepository.save(employee);
 
         mockMvc.perform(delete("/companies/" + savedCompany.getCompanyId()))

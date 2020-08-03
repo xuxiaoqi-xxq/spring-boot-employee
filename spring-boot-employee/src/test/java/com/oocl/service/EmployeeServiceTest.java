@@ -26,7 +26,7 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        List<Employee> employees = Collections.singletonList(new Employee(1, "eva", "female", 18, 10000));
+        List<Employee> employees = Collections.singletonList(new Employee(1, "eva", "female", 18, 10000,1));
         given(employeeRepository.findAll()).willReturn(employees);
 
         //when
@@ -41,8 +41,8 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        Page<Employee> employees = new PageImpl<>(Arrays.asList(new Employee(1, "eva", "female", 18, 1000),
-                new Employee(2, "vae", "male", 20, 1000)));
+        Page<Employee> employees = new PageImpl<>(Arrays.asList(new Employee(1, "eva", "female", 18, 1000,1),
+                new Employee(2, "vae", "male", 20, 1000,1)));
         given(employeeRepository.findAll(PageRequest.of(1, 2))).willReturn(employees);
 
         //when
@@ -57,8 +57,8 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        List<Employee> employees = Arrays.asList(new Employee(1, "eva", "female", 18, 1000),
-                new Employee(2, "vae", "male", 20, 1000));
+        List<Employee> employees = Arrays.asList(new Employee(1, "eva", "female", 18, 1000,1),
+                new Employee(2, "vae", "male", 20, 1000,1));
         given(employeeRepository.findByGender("female")).willReturn(employees);
 
         //when
@@ -73,7 +73,7 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        Employee employee = new Employee(2, "vae", "male", 20, 1000);
+        Employee employee = new Employee(2, "vae", "male", 20, 1000,1);
         given(employeeRepository.findById(2)).willReturn(Optional.of(employee));
 
         //when
@@ -88,7 +88,7 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        Employee employee = new Employee(2, "vae", "male", 20, 1000);
+        Employee employee = new Employee(2, "vae", "male", 20, 1000,1);
         given(employeeRepository.save(employee)).willReturn(employee);
 
         //when
@@ -103,10 +103,10 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        given(employeeRepository.findById(2)).willReturn(Optional.of(new Employee(2, "vae", "female", 20, 1000)));
+        given(employeeRepository.findById(2)).willReturn(Optional.of(new Employee(2, "vae", "female", 20, 1000, 1)));
 
         //when
-        Employee waitUpdateEmployee = new Employee(2, "new name", "male", 20, 1000);
+        Employee waitUpdateEmployee = new Employee(2, "new name", "male", 20, 1000,1);
         Employee updatedEmployee = employeeService.update(2, waitUpdateEmployee);
 
         //then
@@ -160,7 +160,7 @@ public class EmployeeServiceTest {
         EmployeeService employeeService = new EmployeeService(employeeRepository);
 
         //when
-        Employee updatedEmployee = new Employee(1, "eva", "female", 18, 1000);
+        Employee updatedEmployee = new Employee(1, "eva", "female", 18, 1000, null);
 
         //then
         assertThrows(IllegalOperationException.class, () -> employeeService.update(2, updatedEmployee));
@@ -174,7 +174,7 @@ public class EmployeeServiceTest {
         given(employeeRepository.findById(1)).willReturn(Optional.empty());
 
         //when
-        Employee updatedEmployee = new Employee(1, "eva", "female", 18, 1000);
+        Employee updatedEmployee = new Employee(1, "eva", "female", 18, 1000, null);
 
         //then
         assertThrows(NoSuchDataException.class, () -> employeeService.update(1, updatedEmployee));

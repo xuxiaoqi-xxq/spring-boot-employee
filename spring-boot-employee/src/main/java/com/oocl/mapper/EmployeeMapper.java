@@ -20,15 +20,12 @@ public class EmployeeMapper {
     public Employee from(RequestEmployee requestEmployee) throws NoSuchDataException {
         Employee employee = new Employee();
         BeanUtils.copyProperties(requestEmployee, employee);
-        Company company = companyService.findById(requestEmployee.getCompanyId());
-        employee.setCompany(company);
         return employee;
     }
 
     public ResponseEmployee to(Employee employee) {
         ResponseEmployee responseEmployee = new ResponseEmployee();
         BeanUtils.copyProperties(employee, responseEmployee);
-        responseEmployee.setCompanyId(employee.getCompany().getCompanyId());
         return responseEmployee;
     }
 }

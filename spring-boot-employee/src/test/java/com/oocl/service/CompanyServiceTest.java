@@ -59,7 +59,7 @@ public class CompanyServiceTest {
         //given
         CompanyRepository companyRepository = mock(CompanyRepository.class);
         CompanyService companyService = new CompanyService(companyRepository, null);
-        List<Employee> employees = Collections.singletonList(new Employee(1, "eva", "female", 18, 10000));
+        List<Employee> employees = Collections.singletonList(new Employee(1, "eva", "female", 18, 10000,1));
         Company company = new Company(1, "OOCL", employees);
         given(companyRepository.findById(1)).willReturn(Optional.of(company));
 
@@ -122,7 +122,7 @@ public class CompanyServiceTest {
     void should_return_void_when_delete_given_company_id() throws IllegalOperationException {
         //given
         CompanyRepository companyRepository = mock(CompanyRepository.class);
-        Optional<Company> specificCompany = Optional.of(new Company(1, "name", asList(new Employee(1, "eva", "female", 19, 2000))));
+        Optional<Company> specificCompany = Optional.of(new Company(1, "name", asList(new Employee(1, "eva", "female", 19, 2000,1))));
         when(companyRepository.findById(1)).thenReturn(specificCompany);
         EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
 
